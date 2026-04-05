@@ -25,7 +25,7 @@ jobs:
         run: |
           mkdir -p newman
           newman run api-automation/collections/auth/login.postman_collection.positive.json \
-          -e api-automation/environments/dev.postman_environment.json \
+          -e api-automation/environments/dev/dev.postman_environment.json \
           -r htmlextra \
           --reporter-htmlextra-export newman/index.html
 
