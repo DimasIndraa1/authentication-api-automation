@@ -27,7 +27,9 @@ jobs:
           newman run api-automation/collections/auth/login.postman_collection.positive.json \
           -e api-automation/environments/dev/dev.postman_environment.json \
           -r htmlextra \
-          --reporter-htmlextra-export newman/index.html
+          --reporter-htmlextra-export newman/index.html \
+          --reporter-htmlextra-darkTheme \
+          --reporter-htmlextra-title "API Test Report"
 
       - name: Deploy to GitHub Pages
         if: always()
