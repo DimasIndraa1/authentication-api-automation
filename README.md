@@ -47,7 +47,7 @@ npm install -g newman newman-reporter-htmlextra
 ### 2. Eksekusi Test
 Jalankan perintah berikut untuk mengeksekusi collection dan menghasilkan report HTML:
 ```bash
-newman run api-automation/collections/auth/login.postman_collection.json \
+newman run api-automation/collections/auth/login.postman_collection.positive.json \
 -e api-automation/environments/dev.postman_environment.json \
 -r cli,htmlextra \
 --reporter-htmlextra-export newman/index.html
