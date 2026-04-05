@@ -1,5 +1,5 @@
 # 🚀 API Automation Testing - Authentication
-![API Test](https://github.com/DimasIndraa1/authentication-api-automation/actions/workflows/api-test.yml/badge.svg)
+[![API Test](https://github.com/DimasIndraa1/authentication-api-automation/actions/workflows/api-test.yml/badge.svg)](https://github.com/DimasIndraa1/authentication-api-automation/actions)
 [![View Report](https://img.shields.io/badge/View-Live_Report-brightgreen?style=flat-sq&logo=github)](https://dimasindraa1.github.io/authentication-api-automation/)
 
 Project ini merupakan framework **Automation API Testing** yang mengintegrasikan **Postman + Newman** ke dalam alur **CI/CD GitHub Actions**. Hasil pengujian secara otomatis dipublikasikan melalui GitHub Pages.
