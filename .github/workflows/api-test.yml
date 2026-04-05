@@ -1,0 +1,37 @@
+name: API Automation Test
+
+on:
+  push:
+    branches: ["main"]
+    
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: write   # ⬅️ INI KUNCI
+
+jobs:
+  api-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install Newman
+        run: npm install -g newman newman-reporter-htmlextra
+
+      - name: Run Test
+        run: |
+          mkdir -p newman
+          newman run api-automation/collections/auth/login.postman_collection.positive.json \
+          -e api-automation/environments/dev.postman_environment.json \
+          -r htmlextra \
+          --reporter-htmlextra-export newman/index.html
+
+      - name: Deploy to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./newman

@@ -1,0 +1,156 @@
+{
+  "info": {
+    "_postman_id": "31ae7606-9b6c-4126-8905-32591b0172c6",
+    "name": "dummyjson",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "32839059",
+    "_collection_link": "https://go.postman.co/collection/32839059-31ae7606-9b6c-4126-8905-32591b0172c6?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Positive Flow (Happy Path)",
+      "item": [
+        {
+          "name": "/auth/login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Fixed syntax errors in tests\r",
+                  "// Variable \r",
+                  "var response = pm.response.json();\r",
+                  "var accessToken_rs = response?.accessToken;\r",
+                  "var refreshToken_rs = response?.refreshToken;\r",
+                  "var id_rs = response?.id;\r",
+                  "var username_rs = response?.username;\r",
+                  "var email_rs = response?.email;\r",
+                  "var firstName_rs = response?.firstName;\r",
+                  "var lastName_rs = response?.lastName;\r",
+                  "var gender_rs = response?.gender;\r",
+                  "var image_rs = response?.image;\r",
+                  "const nameRegex = /^[a-zA-Z]+$/;\r",
+                  "\r",
+                  "// Variable environments\r",
+                  "var username = pm.environment.get(\"username\");\r",
+                  "var password = pm.environment.get(\"password\");\r",
+                  "var expiresInMins = pm.environment.get(\"expiresInMins\");\r",
+                  "\r",
+                  "// Test\r",
+                  "pm.test(\"01 | Status Respon Valid 200\", () => {\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"02 | Memiliki Field Lengkap response dan tidak kosong\", () => {\r",
+                  "    pm.expect(response).to.have.all.keys(\"accessToken\", \"refreshToken\", \"id\", \"username\", \"email\", \"firstName\", \"lastName\", \"gender\", \"image\").and.to.not.be.empty;\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"03 | Password tidak ada di response\", () => {\r",
+                  "    pm.expect(JSON.stringify(response)).to.not.include(\"password\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"04 | AccessToken tidak kosong dan valid menggunakan format JWT\", () => {\r",
+                  "    pm.expect(accessToken_rs).to.be.a(\"string\").and.to.not.be.empty;\r",
+                  "    pm.expect(accessToken_rs.split(\".\")).to.have.lengthOf(3);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"05 | RefreshToken tidak kosong dan valid menggunakan format JWT\", () => {\r",
+                  "    pm.expect(refreshToken_rs).to.be.a(\"string\").and.not.empty;\r",
+                  "    pm.expect(refreshToken_rs.split(\".\")).to.have.lengthOf(3);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"06 | Validasi Token Access Token tidak sama dengan Refresh Token\", () => {\r",
+                  "    pm.expect(accessToken_rs).to.not.equal(refreshToken_rs);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"07 | id bernilai positif (bukan 0 atau negatif)\", () => {\r",
+                  "    pm.expect(id_rs).to.be.above(0);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"08 | Format pada email valid mengandung @ dan domain\", () => {\r",
+                  "    pm.expect(email_rs).to.include(\"@\").and.to.match(/^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$/);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"09 | Field genre hanya berisi nilai male / female\", () => {\r",
+                  "    pm.expect(gender_rs).to.be.oneOf([\"male\", \"female\"]);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"10 | Field image berupa URL valid dan dapat diakses dengan format (https://)\", () => {\r",
+                  "    pm.expect(image_rs).to.match(/^https?:\\/\\/.+/);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"11 | Username respone sesuai dengan username request\", () => {\r",
+                  "    pm.expect(username_rs).to.equal(username);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"12 | Username tidak mengandung spasi\", () => {\r",
+                  "    pm.expect(username_rs).to.eql(username_rs.trim());\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"13 | Format id sesuai Number\", () => {\r",
+                  "    pm.expect(id_rs).to.be.a(\"number\")\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"14 | FirstName dan lastName hanya berisi karakter alfabet (tanpa angka/simbol)\", () => {\r",
+                  "    pm.expect(firstName_rs).to.be.a(\"string\").and.to.match(nameRegex);\r",
+                  "    pm.expect(lastName_rs).to.be.a(\"string\").and.to.match(nameRegex);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"15 | firstName tidak mengandung spasi di awal/akhir (trimmed)\", () => {\r",
+                  "    pm.expect(firstName_rs).to.eql(firstName_rs.trim());\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"16 | lastName tidak mengandung spasi di awal/akhir (trimmed)\", () => {\r",
+                  "    pm.expect(lastName_rs).to.eql(lastName_rs.trim());\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"17 | Token tidak undefined\", () => {\r",
+                  "    pm.expect(accessToken_rs).to.not.be.undefined;\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response time is less than 2000ms\", function () {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n   \"username\": \"{{username}}\",\r\n   \"password\": \"{{password}}\",\r\n   \"expiresInMins\": {{expiresInMins}}\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Generated from cURL: curl -X POST https://dummyjson.com/auth/login \\\r\n     -H \"Content-Type: application/json\" \\\r\n     -d '{\r\n       \"username\": \"emilys\",\r\n       \"password\": \"emilyspass\",\r\n       \"expiresInMins\": 30\r\n     }'"
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
