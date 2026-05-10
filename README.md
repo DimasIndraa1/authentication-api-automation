@@ -1,7 +1,7 @@
 # API Automation Testing - Authentication
 
 [![API Test](https://github.com/DimasIndraa1/authentication-api-automation/actions/workflows/api-test.yml/badge.svg)](https://github.com/DimasIndraa1/authentication-api-automation/actions)
-[![View Report](https://img.shields.io/badge/View-Live_Report-brightgreen?style=flat-sq&logo=github)](https://dimasindraa1.github.io/authentication-api-automation/)
+[![View Report](https://img.shields.io/badge/View-Live_Report-brightgreen?style=flat-sq&logo=github)](https://dimasindraa1.github.io/authentication-api-automation/index-positive.html)
 
 Project ini merupakan framework **Automation API Testing** untuk modul autentikasi menggunakan **Postman + Newman** yang terintegrasi dengan **CI/CD GitHub Actions**. Laporan hasil pengujian dipublikasikan ke **GitHub Pages** dalam format HTML Extra dan Allure Report.
 
@@ -115,5 +115,6 @@ api-automation-auth/
 
 ## Live Test Report
 
-- **Newman Report:** https://dimasindraa1.github.io/authentication-api-automation/
+- **Newman Report (Positive):** https://dimasindraa1.github.io/authentication-api-automation/index-positive.html
+- **Newman Report (Negative):** https://dimasindraa1.github.io/authentication-api-automation/index-negative.html
 - **Allure Report:** https://dimasindraa1.github.io/authentication-api-automation/allure-report/
