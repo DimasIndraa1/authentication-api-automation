@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "allure": "^3.7.0"
+  },
+  "scripts": {
+    "test:positive": "newman run api-automation/collections/auth/auth.postman_collection.json -e api-automation/environments/dev/dev.postman_environment.json --folder \"Positive Flow\" -r allure,cli",
+    "test:negative": "newman run api-automation/collections/auth/auth.postman_collection.json -e api-automation/environments/dev/dev.postman_environment.json --folder \"Negative Flow\" -d api-automation/data/scenario.json -r allure,cli",
+    "test:all": "npm run test:positive && npm run test:negative",
+    "test:report": "allure generate allure-results --clean -o allure-report",
+    "test:serve": "allure serve allure-results"
+  }
+}

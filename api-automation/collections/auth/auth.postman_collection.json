@@ -1,0 +1,287 @@
+{
+  "info": {
+    "_postman_id": "31ae7606-9b6c-4126-8905-32591b0172c6",
+    "name": "dummyjson",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "32839059",
+    "_collection_link": "https://go.postman.co/collection/32839059-31ae7606-9b6c-4126-8905-32591b0172c6?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Positive Flow",
+      "item": [
+        {
+          "name": "/auth/login/positive",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// variables \r",
+                  "const response = pm.response.json();\r",
+                  "const accessToken_rs = response?.accessToken;\r",
+                  "const refreshToken_rs = response?.refreshToken;\r",
+                  "const id_rs = response?.id;\r",
+                  "const username_rs = response?.username;\r",
+                  "const email_rs = response?.email;\r",
+                  "const firstName_rs = response?.firstName;\r",
+                  "const lastName_rs = response?.lastName;\r",
+                  "const gender_rs = response?.gender;\r",
+                  "const image_rs = response?.image;\r",
+                  "const nameRegex =  /^[a-zA-Z\\s'-]+$/;\r",
+                  "// variables environments\r",
+                  "const username = pm.environment.get(\"username\");\r",
+                  "const password = pm.environment.get(\"password\");\r",
+                  "const expiresInMins = pm.environment.get(\"expiresInMins\");\r",
+                  "// Test\r",
+                  "pm.test(\"01 | Status Code Valid yaitu 200\", () => {\r",
+                  "    pm.expect(pm.response.code).to.eql(200);\r",
+                  "});\r",
+                  "pm.test(\"02 | Memiliki Field Lengkap response dan tidak kosong\", () => {\r",
+                  "    pm.expect(response).to.not.be.null;\r",
+                  "    pm.expect(response).to.include.all.keys(\"accessToken\", \"refreshToken\", \"id\", \"username\", \"email\", \"firstName\", \"lastName\", \"gender\", \"image\").and.to.not.be.empty;\r",
+                  "});\r",
+                  "pm.test(\"03 | Password tidak ada di response\", () => {\r",
+                  "    pm.expect(response).to.not.have.property(\"password\")\r",
+                  "});\r",
+                  "pm.test(\"04 | AccessToken tidak kosong dan valid menggunakan format JWT\", () => {\r",
+                  "    pm.expect(accessToken_rs).to.be.a(\"string\").and.to.not.be.empty;\r",
+                  "    pm.expect(accessToken_rs.split(\".\").every(part => part.length > 0)).to.be.true;\r",
+                  "});\r",
+                  "pm.test(\"05 | RefreshToken tidak kosong dan valid menggunakan format JWT\", () => {\r",
+                  "    pm.expect(refreshToken_rs).to.be.a(\"string\").and.not.empty;\r",
+                  "    pm.expect(refreshToken_rs.split(\".\").every(part => part.length > 0)).to.be.true;\r",
+                  "});\r",
+                  "pm.test(\"06 | Id bernilai angka positif (bukan 0 atau negatif)\", () => {\r",
+                  "    pm.expect(id_rs).to.be.a(\"number\").and.to.be.above(0);\r",
+                  "});\r",
+                  "pm.test(\"07 | ID adalah bilangan bulat (integer)\", () => {\r",
+                  "    pm.expect(id_rs % 1).to.eql(0);\r",
+                  "});\r",
+                  "pm.test(\"08 | Username response sesuai dengan username request dan tidak ada spasi\", () => {\r",
+                  "    pm.expect(username_rs).to.equal(username);\r",
+                  "    pm.expect(username_rs).to.not.include(\" \");\r",
+                  "});\r",
+                  "pm.test(\"09 | Format pada email valid mengandung @ dan domain\", () => {\r",
+                  "    pm.expect(email_rs).to.include(\"@\").and.to.match(/^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$/);\r",
+                  "});\r",
+                  "pm.test(\"10 | FirstName dan lastName hanya berisi karakter alfabet (tanpa angka/simbol)\", () => {\r",
+                  "    pm.expect(firstName_rs).to.be.a(\"string\").and.to.match(nameRegex);\r",
+                  "    pm.expect(lastName_rs).to.be.a(\"string\").and.to.match(nameRegex);\r",
+                  "});\r",
+                  "pm.test(\"11 | FirstName & lastName tidak mengandung spasi di awal/akhir (trimmed)\", () => {\r",
+                  "    pm.expect(firstName_rs).to.eql(firstName_rs.trim());\r",
+                  "    pm.expect(lastName_rs).to.eql(lastName_rs.trim());\r",
+                  "});\r",
+                  "pm.test(\"12 | Field gender hanya berisi value male / female\", () => {\r",
+                  "    pm.expect(gender_rs).to.be.oneOf([\"male\", \"female\"]);\r",
+                  "});\r",
+                  "pm.test(\"13 | Field image berupa URL valid dengan format (https://)\", () => {\r",
+                  "    pm.expect(image_rs).to.match(/^https?:\\/\\/.+/);\r",
+                  "});\r",
+                  "pm.test(\"14 | Image URL dapat diakses\", () => {\r",
+                  "    pm.sendRequest(image_rs, function (err, res) {\r",
+                  "        pm.expect(err).to.be.null;\r",
+                  "        pm.expect(res).to.have.property(\"code\", 200);\r",
+                  "    });\r",
+                  "});\r",
+                  "pm.test(\"15 | Response time di bawah 3 detik\", () => {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n   \"username\": \"{{username}}\",\r\n   \"password\": \"{{password}}\",\r\n   \"expiresInMins\": {{expiresInMins}}\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Generated from cURL: curl -X POST https://dummyjson.com/auth/login \\\r\n     -H \"Content-Type: application/json\" \\\r\n     -d '{\r\n       \"username\": \"emilys\",\r\n       \"password\": \"emilyspass\",\r\n       \"expiresInMins\": 30\r\n     }'"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Negative Flow",
+      "item": [
+        {
+          "name": "/auth/login/negative",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const scenario = pm.variables.get(\"scenario\")\r",
+                  "const response = pm.response.json()\r",
+                  "const message  = (response?.message ?? \"\").toLowerCase()\r",
+                  "const raw      = JSON.stringify(response).toLowerCase()\r",
+                  "\r",
+                  "\r",
+                  "const expectedStatus = [\"empty_body\", \"missing_password\", \"missing_username\"].includes(scenario)\r",
+                  "    ? 400\r",
+                  "    : 401\r",
+                  "\r",
+                  "pm.test(`N-01 | Status respon ${expectedStatus}`, () => {\r",
+                  "    pm.expect(pm.response.code).to.eql(expectedStatus)\r",
+                  "})\r",
+                  "\r",
+                  "\r",
+                  "pm.test(`N-02 | Response adalah JSON yang valid`, () => {\r",
+                  "    pm.response.to.be.json\r",
+                  "})\r",
+                  "\r",
+                  "pm.test(`N-03 | Response time kurang dari 5 detik`, () => {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(5000)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test(`N-04 | Terdapat pesan error di response`, () => {\r",
+                  "    pm.expect(response?.message).to.be.a(\"string\").and.not.empty\r",
+                  "})\r",
+                  "\r",
+                  "pm.test(`N-05 | Token tidak ada di response`, () => {\r",
+                  "    pm.expect(raw).to.not.include(\"token\")\r",
+                  "})\r",
+                  "\r",
+                  "pm.test(`N-06 | Data tidak ada atau null di response`, () => {\r",
+                  "    if (response.hasOwnProperty(\"data\")) {\r",
+                  "        pm.expect(response.data).to.eql(null)\r",
+                  "    } else {\r",
+                  "        pm.expect(response.hasOwnProperty(\"data\")).to.eql(false)\r",
+                  "    }\r",
+                  "})\r",
+                  "\r",
+                  "pm.test(`N-07 | Pesan error tidak mengekspos info sensitif`, () => {\r",
+                  "    pm.expect(raw).to.not.include(\"stack\")\r",
+                  "    pm.expect(raw).to.not.include(\"exception\")\r",
+                  "    pm.expect(raw).to.not.include(\"sql\")\r",
+                  "    pm.expect(raw).to.not.include(\"db\")\r",
+                  "})\r",
+                  "\r",
+                  "\r",
+                  "\r",
+                  "if (scenario === \"unknown_username\") {\r",
+                  "    pm.test(`N-08 | Pesan error bersifat generik (cegah user enumeration)`, () => {\r",
+                  "        pm.expect(message).to.not.include(\"username tidak ditemukan\")\r",
+                  "        pm.expect(message).to.not.include(\"user not found\")\r",
+                  "        pm.expect(message).to.not.include(\"username tidak ada\")\r",
+                  "    })\r",
+                  "}\r",
+                  "\r",
+                  "if (scenario === \"missing_password\") {\r",
+                  "    pm.test(`N-09 | Pesan error menyebutkan field password`, () => {\r",
+                  "        pm.expect(message).to.satisfy(msg =>\r",
+                  "            msg.includes(\"password\") || msg.includes(\"required\") || msg.includes(\"wajib\")\r",
+                  "        )\r",
+                  "    })\r",
+                  "}\r",
+                  "\r",
+                  "if (scenario === \"missing_username\") {\r",
+                  "    pm.test(`N-10 | Pesan error menyebutkan field username`, () => {\r",
+                  "        pm.expect(message).to.satisfy(msg =>\r",
+                  "            msg.includes(\"username\") || msg.includes(\"required\") || msg.includes(\"wajib\")\r",
+                  "        )\r",
+                  "    })\r",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const validUsername = pm.environment.get(\"username\")\r",
+                  "const validPassword = pm.environment.get(\"password\")\r",
+                  "const validexpiresInMins = pm.environment.get(\"expiresInMins\")\r",
+                  "\r",
+                  "const scenario = pm.environment.get(\"scenario\")\r",
+                  "\r",
+                  "const bodyMap = {\r",
+                  "    wrong_format: { username: \"emi lys\", password: \"emilyspass@@\", expiresInMins: validexpiresInMins },\r",
+                  "    wrong_password: { username: validUsername, password: \"password_salah_123\", expiresInMins: validexpiresInMins },\r",
+                  "    wrong_expireInMins: { username: validUsername, password: validPassword, expiresInMins: 0 },\r",
+                  "    unknown_username: { username: \"user_tidak_terdaftar_xyz\", password: validPassword, expiresInMins: validexpiresInMins },\r",
+                  "    empty_body: {},\r",
+                  "    missing_password: { username: validUsername, expiresInMins: validexpiresInMins },\r",
+                  "    missing_username: { password: validPassword, expiresInMins: validexpiresInMins }\r",
+                  "}\r",
+                  "\r",
+                  "const body = bodyMap[scenario] ?? {}\r",
+                  "\r",
+                  "pm.variables.set(\"requestBody\", JSON.stringify(body))"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "content-type": true
+            }
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{{requestBody}}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Generated from cURL: curl -X POST https://dummyjson.com/auth/login \\\r\n     -H \"Content-Type: application/json\" \\\r\n     -d '{\r\n       \"username\": \"emilys\",\r\n       \"password\": \"emilyspass\",\r\n       \"expiresInMins\": 30\r\n     }'"
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
