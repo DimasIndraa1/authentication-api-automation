@@ -25,8 +25,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Install Newman & Reporters
-        run: npm install -g newman newman-reporter-htmlextra newman-reporter-allure
+      - name: Install Newman & Allure Reporter
+        run: npm install -g newman newman-reporter-allure
 
       - name: Run Positive Tests
         continue-on-error: true
@@ -34,10 +34,7 @@ jobs:
           newman run api-automation/collections/auth/auth.postman_collection.json \
             -e api-automation/environments/dev/dev.postman_environment.json \
             --folder "Positive Flow" \
-            -r htmlextra,allure \
-            --reporter-htmlextra-export newman/index-positive.html \
-            --reporter-htmlextra-darkTheme \
-            --reporter-htmlextra-title "API Test Report - Positive"
+            -r allure,cli
 
       - name: Run Negative Tests
         continue-on-error: true
@@ -46,25 +43,15 @@ jobs:
             -e api-automation/environments/dev/dev.postman_environment.json \
             --folder "Negative Flow" \
             -d api-automation/data/scenario.json \
-            -r htmlextra,allure \
-            --reporter-htmlextra-export newman/index-negative.html \
-            --reporter-htmlextra-darkTheme \
-            --reporter-htmlextra-title "API Test Report - Negative"
+            -r allure,cli
 
       - name: Generate Allure Report
         if: always()
         run: npx allure generate allure-results --output allure-report
 
-      - name: Prepare combined reports
-        if: always()
-        run: |
-          mkdir -p public/allure-report
-          cp -r newman/* public/
-          cp -r allure-report/* public/allure-report/
-
-      - name: Deploy to GitHub Pages
+      - name: Deploy Allure Report to GitHub Pages
         if: always()
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
+          publish_dir: ./allure-report

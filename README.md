@@ -1,9 +1,9 @@
 # API Automation Testing - Authentication
 
 [![API Test](https://github.com/DimasIndraa1/authentication-api-automation/actions/workflows/api-test.yml/badge.svg)](https://github.com/DimasIndraa1/authentication-api-automation/actions)
-[![View Report](https://img.shields.io/badge/View-Live_Report-brightgreen?style=flat-sq&logo=github)](https://dimasindraa1.github.io/authentication-api-automation/index-positive.html)
+[![View Report](https://img.shields.io/badge/View-Live_Report-brightgreen?style=flat-sq&logo=github)](https://dimasindraa1.github.io/authentication-api-automation/allure-report/)
 
-Project ini merupakan framework **Automation API Testing** untuk modul autentikasi menggunakan **Postman + Newman** yang terintegrasi dengan **CI/CD GitHub Actions**. Laporan hasil pengujian dipublikasikan ke **GitHub Pages** dalam format HTML Extra dan Allure Report.
+Project ini merupakan framework **Automation API Testing** untuk modul autentikasi menggunakan **Postman + Newman** yang terintegrasi dengan **CI/CD GitHub Actions**. Laporan hasil pengujian dipublikasikan ke **GitHub Pages** dalam format Allure Report.
 
 ---
 
@@ -14,7 +14,6 @@ Project ini merupakan framework **Automation API Testing** untuk modul autentika
 | **Postman** | API Development & Collection runner |
 | **Newman** | CLI runner untuk menjalankan Postman collection |
 | **Allure** | Reporting framework untuk visualisasi hasil test |
-| **Newman HTML Extra** | Reporter visual tambahan untuk hasil test |
 | **GitHub Actions** | Automation pipeline (CI/CD) |
 | **GitHub Pages** | Hosting laporan testing statis |
 
@@ -42,7 +41,7 @@ Pastikan Anda sudah menginstal **Node.js**, lalu clone repo ini dan masuk ke dir
 
 ```bash
 npm install
-npm install -g newman newman-reporter-htmlextra newman-reporter-allure
+npm install -g newman newman-reporter-allure
 ```
 
 ### 3. Jalankan Test
@@ -115,6 +114,4 @@ api-automation-auth/
 
 ## Live Test Report
 
-- **Newman Report (Positive):** https://dimasindraa1.github.io/authentication-api-automation/index-positive.html
-- **Newman Report (Negative):** https://dimasindraa1.github.io/authentication-api-automation/index-negative.html
 - **Allure Report:** https://dimasindraa1.github.io/authentication-api-automation/allure-report/
