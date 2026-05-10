@@ -1,0 +1,69 @@
+const scenario = pm.variables.get("scenario")
+const response = pm.response.json()
+const message  = (response?.message ?? "").toLowerCase()
+const raw      = JSON.stringify(response).toLowerCase()
+
+
+const expectedStatus = 400
+
+pm.test(`N-01 | Status respon ${expectedStatus}`, () => {
+    pm.expect(pm.response.code).to.eql(expectedStatus)
+})
+
+
+pm.test(`N-02 | Response adalah JSON yang valid`, () => {
+    pm.response.to.be.json
+})
+
+pm.test(`N-03 | Response time kurang dari 5 detik`, () => {
+    pm.expect(pm.response.responseTime).to.be.below(5000)
+})
+
+pm.test(`N-04 | Terdapat pesan error di response`, () => {
+    pm.expect(response?.message).to.be.a("string").and.not.empty
+})
+
+pm.test(`N-05 | Token tidak ada di response`, () => {
+    pm.expect(raw).to.not.include("token")
+})
+
+pm.test(`N-06 | Data tidak ada atau null di response`, () => {
+    if (response.hasOwnProperty("data")) {
+        pm.expect(response.data).to.eql(null)
+    } else {
+        pm.expect(response.hasOwnProperty("data")).to.eql(false)
+    }
+})
+
+pm.test(`N-07 | Pesan error tidak mengekspos info sensitif`, () => {
+    pm.expect(raw).to.not.include("stack")
+    pm.expect(raw).to.not.include("exception")
+    pm.expect(raw).to.not.include("sql")
+    pm.expect(raw).to.not.include("db")
+})
+
+
+
+if (scenario === "unknown_username") {
+    pm.test(`N-08 | Pesan error bersifat generik (cegah user enumeration)`, () => {
+        pm.expect(message).to.not.include("username tidak ditemukan")
+        pm.expect(message).to.not.include("user not found")
+        pm.expect(message).to.not.include("username tidak ada")
+    })
+}
+
+if (scenario === "missing_password") {
+    pm.test(`N-09 | Pesan error menyebutkan field password`, () => {
+        pm.expect(message).to.satisfy(msg =>
+            msg.includes("password") || msg.includes("required") || msg.includes("wajib")
+        )
+    })
+}
+
+if (scenario === "missing_username") {
+    pm.test(`N-10 | Pesan error menyebutkan field username`, () => {
+        pm.expect(message).to.satisfy(msg =>
+            msg.includes("username") || msg.includes("required") || msg.includes("wajib")
+        )
+    })
+}
