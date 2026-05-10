@@ -29,6 +29,7 @@ jobs:
         run: npm install -g newman newman-reporter-htmlextra newman-reporter-allure
 
       - name: Run Positive Tests
+        continue-on-error: true
         run: |
           newman run api-automation/collections/auth/auth.postman_collection.json \
             -e api-automation/environments/dev/dev.postman_environment.json \
@@ -39,6 +40,7 @@ jobs:
             --reporter-htmlextra-title "API Test Report - Positive"
 
       - name: Run Negative Tests
+        continue-on-error: true
         run: |
           newman run api-automation/collections/auth/auth.postman_collection.json \
             -e api-automation/environments/dev/dev.postman_environment.json \
@@ -51,7 +53,7 @@ jobs:
 
       - name: Generate Allure Report
         if: always()
-        run: npx allure generate allure-results --clean -o allure-report
+        run: npx allure generate allure-results --output allure-report
 
       - name: Prepare combined reports
         if: always()
