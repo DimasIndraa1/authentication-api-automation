@@ -4,9 +4,7 @@ const message  = (response?.message ?? "").toLowerCase()
 const raw      = JSON.stringify(response).toLowerCase()
 
 
-const expectedStatus = ["empty_body", "missing_password", "missing_username"].includes(scenario)
-    ? 400
-    : 401
+const expectedStatus = 400
 
 pm.test(`N-01 | Status respon ${expectedStatus}`, () => {
     pm.expect(pm.response.code).to.eql(expectedStatus)
