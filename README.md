@@ -97,8 +97,8 @@ allure serve allure-results
 ```
 api-automation-auth/
 ├── .github/workflows/
-│   ├── api-test.yml           # GitHub Actions CI/CD pipeline
-│   └── gitlab-ci.yml          # GitLab CI alternative config
+│   └── api-test.yml           # GitHub Actions CI/CD pipeline
+├── gitlab-ci.yml              # GitLab CI alternative config
 ├── api-automation/
 │   ├── collections/auth/
 │   │   └── auth.postman_collection.json   # Main collection (positive & negative)
