@@ -1,0 +1,100 @@
+// ================================================================
+// NEGATIVE TEST CASE — LOGIN AUTH
+// 1 Request Postman, 8 Scenario Parallel
+// ================================================================
+const BASE_URL = pm.environment.get("base_url") + "/auth/login"
+const HDR      = [{ key: "Content-Type", value: "application/json" }]
+const env = {
+    username: pm.environment.get("username"),
+    password: pm.environment.get("password"),
+    expires:  pm.environment.get("expiresInMins")
+}
+// ── HELPER ──
+function assertResponse(label, { expectedStatus, expectedField, category, type }, err, res) {
+    if (err) {
+        pm.test(`${label} ❌ Request gagal`, () => { throw err })
+        return
+    }
+    const response = res.json()
+    const message  = (response?.message ?? "").toLowerCase()
+    const raw      = JSON.stringify(response).toLowerCase()
+    pm.test(`${label} | N-01 Status respons ${expectedStatus}`, () => {
+        pm.expect(res.code).to.eql(expectedStatus)
+    })
+    pm.test(`${label} | N-02 Response adalah JSON yang valid`, () => {
+        pm.expect(res.headers.get("content-type")).to.include("json")
+    })
+    pm.test(`${label} | N-03 Response time < 10 detik`, () => {
+        pm.expect(res.responseTime).to.be.below(10000)
+    })
+    if (type !== "success") {
+        pm.test(`${label} | N-04 Terdapat pesan error di response`, () => {
+            pm.expect(response?.message).to.be.a("string").and.not.empty
+        })
+        pm.test(`${label} | N-05 Token tidak ada di response`, () => {
+            pm.expect(raw).to.not.include('"accesstoken"')
+            pm.expect(raw).to.not.include('"refreshtoken"')
+        })
+        pm.test(`${label} | N-06 Data tidak ada atau null di response`, () => {
+            if (response.hasOwnProperty("data")) {
+                pm.expect(response.data).to.eql(null)
+            } else {
+                pm.expect(response.hasOwnProperty("data")).to.eql(false)
+            }
+        })
+    }
+    pm.test(`${label} | N-07 Tidak mengekspos info sensitif`, () => {
+        const sensitive = ["stack", "exception", "sql", "db"]
+        sensitive.forEach(k => pm.expect(raw).to.not.include(k))
+    })
+    if (category === "validation" && expectedField) {
+        pm.test(`${label} | N-09 Pesan error menyebutkan field "${expectedField}"`, () => {
+            pm.expect(message).to.satisfy(msg =>
+                msg.includes(expectedField) || msg.includes("required") || msg.includes("wajib")
+            )
+        })
+    }
+    if (category === "auth") {
+        pm.test(`${label} | N-08 Pesan error generik (cegah user enumeration)`, () => {
+            const genericCheck = [
+                "username tidak ditemukan", "user not found", "username tidak ada",
+                "password salah", "wrong password", "invalid password", "tidak terdaftar"
+            ]
+            genericCheck.forEach(k => pm.expect(message).to.not.include(k))
+        })
+    }
+    if (type === "success") {
+        pm.test(`${label} | N-10 accessToken === refreshToken`, () => {
+            const accessToken  = response?.accessToken
+            const refreshToken = response?.refreshToken
+            pm.expect(accessToken).to.be.a("string").and.not.empty
+            pm.expect(refreshToken).to.be.a("string").and.not.empty
+            pm.expect(accessToken).to.eql(refreshToken)
+        })
+    }
+}
+// ── DAFTAR SKENARIO ──
+const scenarios = [
+    { name: "VS-01 Empty Body",       body: {},                                                status: 400, cat: "validation", field: null, type: "error" },
+    { name: "VS-02 Missing Password", body: { username: env.username, expiresInMins: env.expires }, status: 400, cat: "validation", field: "password", type: "error" },
+    { name: "VS-03 Missing Username", body: { password: env.password, expiresInMins: env.expires }, status: 400, cat: "validation", field: "username", type: "error" },
+    { name: "VS-04 Wrong Format",     body: { username: "emi lys", password: "emilyspass@@", expiresInMins: env.expires }, status: 400, cat: "validation", field: null, type: "error" },
+    { name: "VS-05 Wrong Password",   body: { username: env.username, password: "password_salah_123", expiresInMins: env.expires }, status: 400, cat: "auth", field: null, type: "error" },
+    { name: "VS-06 Unknown Username", body: { username: "user_tidak_terdaftar_xyz", password: env.password, expiresInMins: env.expires }, status: 400, cat: "validation", field: null, type: "error" },
+    { name: "VS-07 ExpiresInMins 0",  body: { username: env.username, password: env.password, expiresInMins: 0  }, status: 200, cat: "validation", field: null, type: "success" },
+    { name: "VS-08 ExpiresInMins -1", body: { username: env.username, password: env.password, expiresInMins: -1 }, status: 500, cat: "validation", field: null, type: "error" }
+]
+// ── PARALLEL RUNNER ──
+scenarios.forEach(s => {
+    pm.sendRequest({
+        url: BASE_URL, method: "POST", header: HDR,
+        body: { mode: "raw", raw: JSON.stringify(s.body) }
+    }, (err, res) => {
+        assertResponse(s.name, {
+            expectedStatus: s.status,
+            category: s.cat,
+            expectedField: s.field,
+            type: s.type
+        }, err, res)
+    })
+})
