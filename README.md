@@ -5,6 +5,8 @@
 
 This project is an **Automation API Testing** framework for authentication module using **Postman + Newman** integrated with **CI/CD GitHub Actions**. Test reports are published to **GitHub Pages** as Allure Report.
 
+![Allure Report Screenshot](images/allure-report.png)
+
 ---
 
 ## Tech Stack & Tools
@@ -115,5 +117,3 @@ api-automation-auth/
 ## Live Test Report
 
 - **Allure Report:** https://dimasindraa1.github.io/authentication-api-automation/allure-report/
-
-![Allure Report Screenshot](images/allure-report.png)
