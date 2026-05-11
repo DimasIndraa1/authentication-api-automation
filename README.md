@@ -1,7 +1,7 @@
 # API Automation Testing - Authentication
 
 [![API Test](https://github.com/DimasIndraa1/authentication-api-automation/actions/workflows/api-test.yml/badge.svg)](https://github.com/DimasIndraa1/authentication-api-automation/actions)
-[![View Report](https://img.shields.io/badge/View-Live_Report-brightgreen?style=flat-sq&logo=github)](https://dimasindraa1.github.io/authentication-api-automation/allure-report/)
+[![View Report](https://img.shields.io/badge/View-Live_Report-brightgreen?style=flat-sq&logo=github)](https://dimasindraa1.github.io/authentication-api-automation/)
 
 This project is an **Automation API Testing** framework for authentication module using **Postman + Newman** integrated with **CI/CD GitHub Actions**. Test reports are published to **GitHub Pages** as Allure Report.
 
