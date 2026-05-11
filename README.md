@@ -115,3 +115,5 @@ api-automation-auth/
 ## Live Test Report
 
 - **Allure Report:** https://dimasindraa1.github.io/authentication-api-automation/allure-report/
+
+![Allure Report Screenshot](images/allure-report.png)
