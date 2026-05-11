@@ -3,39 +3,39 @@
 [![API Test](https://github.com/DimasIndraa1/authentication-api-automation/actions/workflows/api-test.yml/badge.svg)](https://github.com/DimasIndraa1/authentication-api-automation/actions)
 [![View Report](https://img.shields.io/badge/View-Live_Report-brightgreen?style=flat-sq&logo=github)](https://dimasindraa1.github.io/authentication-api-automation/allure-report/)
 
-Project ini merupakan framework **Automation API Testing** untuk modul autentikasi menggunakan **Postman + Newman** yang terintegrasi dengan **CI/CD GitHub Actions**. Laporan hasil pengujian dipublikasikan ke **GitHub Pages** dalam format Allure Report.
+This project is an **Automation API Testing** framework for authentication module using **Postman + Newman** integrated with **CI/CD GitHub Actions**. Test reports are published to **GitHub Pages** as Allure Report.
 
 ---
 
 ## Tech Stack & Tools
 
-| Tool | Kegunaan |
+| Tool | Purpose |
 | :--- | :--- |
 | **Postman** | API Development & Collection runner |
-| **Newman** | CLI runner untuk menjalankan Postman collection |
-| **Allure** | Reporting framework untuk visualisasi hasil test |
+| **Newman** | CLI runner for Postman collections |
+| **Allure** | Reporting framework for test visualization |
 | **GitHub Actions** | Automation pipeline (CI/CD) |
-| **GitHub Pages** | Hosting laporan testing statis |
+| **GitHub Pages** | Hosting static test reports |
 
 ---
 
 ## Scope Testing
 
-Pengujian difokuskan pada modul autentikasi untuk memastikan keamanan dan validitas data:
+Testing focuses on the authentication module to ensure security and data validity:
 
-- **Login API:** Validasi skenario positif & negatif (wrong password, unknown username, empty body, missing field)
-- **Token Validation:** Memastikan akses token digenerate dengan benar (format JWT)
-- **Response Schema:** Verifikasi struktur JSON response sesuai kontrak API
-- **Status Code:** Memastikan respon HTTP (200, 400, 401) sesuai ekspektasi
-- **Security:** Memastikan password/token tidak bocor di response, tidak ada stack trace
+- **Login API:** Positive & negative scenario validation (wrong password, unknown username, empty body, missing field)
+- **Token Validation:** Ensures access tokens are generated correctly (JWT format)
+- **Response Schema:** Verifies JSON response structure matches API contract
+- **Status Code:** Ensures HTTP response codes (200, 400, 401) match expectations
+- **Security:** Ensures password/token are not leaked in response, no stack trace exposure
 
 ---
 
-## Cara Menjalankan di Local
+## How to Run Locally
 
-### 1. Prasyarat
+### 1. Prerequisites
 
-Pastikan Anda sudah menginstal **Node.js**, lalu clone repo ini dan masuk ke direktori project.
+Make sure you have **Node.js** installed, then clone this repo and navigate to the project directory.
 
 ### 2. Install Dependencies
 
@@ -44,22 +44,22 @@ npm install
 npm install -g newman newman-reporter-allure
 ```
 
-### 3. Jalankan Test
+### 3. Run Tests
 
 Via npm scripts (recommended):
 
 ```bash
-# Positive test saja
+# Positive test only
 npm run test:positive
 
-# Negative test saja (data-driven)
+# Negative test only (data-driven)
 npm run test:negative
 
-# Semua test (positive + negative)
+# All tests
 npm run test:all
 ```
 
-Atau via Newman langsung:
+Or via Newman directly:
 
 ```bash
 # Positive test
@@ -76,14 +76,14 @@ newman run api-automation/collections/auth/auth.postman_collection.json \
   -r cli,allure
 ```
 
-### 4. Generate & Lihat Allure Report
+### 4. Generate & View Allure Report
 
 ```bash
 npm run test:report
 npm run test:serve
 ```
 
-Atau langsung:
+Or directly:
 
 ```bash
 allure serve allure-results
@@ -91,7 +91,7 @@ allure serve allure-results
 
 ---
 
-## Struktur Project
+## Project Structure
 
 ```
 api-automation-auth/
@@ -100,7 +100,7 @@ api-automation-auth/
 ├── gitlab-ci.yml              # GitLab CI alternative config
 ├── api-automation/
 │   ├── collections/auth/
-│   │   └── auth.postman_collection.json   # Main collection (positive & negative)
+│   │   └── auth.postman_collection.json   # Main collection (negative tests)
 │   ├── data/
 │   │   └── scenario.json      # Data-driven test scenarios
 │   └── environments/dev/
@@ -114,4 +114,4 @@ api-automation-auth/
 
 ## Live Test Report
 
-- **Allure Report:** https://dimasindraa1.github.io/authentication-api-automation/
+- **Allure Report:** https://dimasindraa1.github.io/authentication-api-automation/allure-report/
