@@ -111,9 +111,3 @@ api-automation-auth/
 ├── package.json
 └── README.md
 ```
-
----
-
-## Live Test Report
-
-- **Allure Report:** https://dimasindraa1.github.io/authentication-api-automation/allure-report/
