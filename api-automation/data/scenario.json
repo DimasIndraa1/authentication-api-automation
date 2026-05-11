@@ -1,7 +1,0 @@
-[
-  { "scenario": "wrong_password" },
-  { "scenario": "unknown_username" },
-  { "scenario": "empty_body" },
-  { "scenario": "missing_password" },
-  { "scenario": "missing_username" }
-]

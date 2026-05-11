@@ -31,18 +31,17 @@ jobs:
       - name: Run Positive Tests
         continue-on-error: true
         run: |
-          newman run api-automation/collections/auth/auth.postman_collection.json \
-            -e api-automation/environments/dev/dev.postman_environment.json \
+          newman run api-automation/collections/auth/auth.dummyjson.postman_collection.json \
+            -e api-automation/environments/prod/prod.postman_environment.json \
             --folder "Positive Flow" \
             -r allure,cli
 
       - name: Run Negative Tests
         continue-on-error: true
         run: |
-          newman run api-automation/collections/auth/auth.postman_collection.json \
-            -e api-automation/environments/dev/dev.postman_environment.json \
+          newman run api-automation/collections/auth/auth.dummyjson.postman_collection.json \
+            -e api-automation/environments/prod/prod.postman_environment.json \
             --folder "Negative Flow" \
-            -d api-automation/data/scenario.json \
             -r allure,cli
 
       - name: Generate Allure Report

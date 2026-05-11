@@ -10,17 +10,16 @@ api-automation-test:
     - npm install
   script:
     - |
-      newman run api-automation/collections/auth/auth.postman_collection.json \
+      newman run api-automation/collections/auth/auth.dummyjson.postman_collection.json \
         --folder "Positive Flow" \
-        -e api-automation/environments/dev/dev.postman_environment.json \
+        -e api-automation/environments/prod/prod.postman_environment.json \
         --env-var "username=$API_USERNAME" \
         --env-var "password=$API_PASSWORD" \
         -r allure,cli
     - |
-      newman run api-automation/collections/auth/auth.postman_collection.json \
+      newman run api-automation/collections/auth/auth.dummyjson.postman_collection.json \
         --folder "Negative Flow" \
-        -e api-automation/environments/dev/dev.postman_environment.json \
-        -d api-automation/data/scenario.json \
+        -e api-automation/environments/prod/prod.postman_environment.json \
         --env-var "username=$API_USERNAME" \
         --env-var "password=$API_PASSWORD" \
         -r allure,cli

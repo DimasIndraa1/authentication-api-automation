@@ -71,10 +71,9 @@ newman run api-automation/collections/auth/auth.postman_collection.json \
   -r cli,allure
 
 # Negative test
-newman run api-automation/collections/auth/auth.postman_collection.json \
-  -e api-automation/environments/dev/dev.postman_environment.json \
+newman run api-automation/collections/auth/auth.dummyjson.postman_collection.json \
+  -e api-automation/environments/prod/prod.postman_environment.json \
   --folder "Negative Flow" \
-  -d api-automation/data/scenario.json \
   -r cli,allure
 ```
 
@@ -102,11 +101,11 @@ api-automation-auth/
 ├── gitlab-ci.yml              # GitLab CI alternative config
 ├── api-automation/
 │   ├── collections/auth/
-│   │   └── auth.postman_collection.json   # Main collection (negative tests)
+│   │   └── auth.dummyjson.postman_collection.json   # Main collection
 │   ├── data/
 │   │   └── scenario.json      # Data-driven test scenarios
-│   └── environments/dev/
-│       └── dev.postman_environment.json   # Environment variables
+│   └── environments/prod/
+│       └── prod.postman_environment.json   # Environment variables
 ├── .gitignore
 ├── package.json
 └── README.md
